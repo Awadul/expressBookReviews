@@ -52,11 +52,22 @@ public_users.get('/', function (req, res) {
 public_users.get('/isbn/:isbn', function (req, res) {
   //Write your code here
   const isbn = req.params.isbn;
-  const book = books[isbn];
 
-  if (book) {
+  const getBookByISBN = () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const book = books[isbn];
+        if (book) {
+          resolve(book)
+        } else {
+          reject();
+        }
+      }, 1000)
+    })
+  }
+  try {
     return res.status(200).send(book)
-  } else {
+  } catch (error) {
     res.status(404).send({ msg: "Book not found with this isbn" });
   }
 });
